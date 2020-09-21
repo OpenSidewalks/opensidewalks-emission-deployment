@@ -1,0 +1,18 @@
+version: "3"
+services:
+  caddy:
+    ports:
+      - 2015:2015
+    volumes:
+      - ./dev/configs/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./dev/data/caddy:/data:rw
+
+  e-mission:
+    ports:
+      - 8080:8080
+
+  mongodb:
+    ports:
+      - 27017:27017
+    volumes:
+      - ./dev/data/mongodb:/data/db

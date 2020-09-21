@@ -1,0 +1,24 @@
+version: "3"
+services:
+  caddy:
+    image: caddy:2.1.1
+    networks:
+      - e-mission
+
+  e-mission:
+    image: emission/e-mission-server:2.8.0
+    depends_on:
+      - mongodb
+    environment:
+      - DB_HOST=mongodb
+      - WEB_SERVER_HOST=0.0.0.0
+    networks:
+      - e-mission
+
+  mongodb:
+    image: mongo:3.4
+    networks:
+      - e-mission
+
+networks:
+  e-mission:

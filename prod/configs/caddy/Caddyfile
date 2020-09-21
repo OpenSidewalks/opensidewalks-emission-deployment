@@ -1,0 +1,7 @@
+{
+  email nbolten@gmail.com
+}
+
+{$HOST} {
+  reverse_proxy / e-mission:8080
+}
