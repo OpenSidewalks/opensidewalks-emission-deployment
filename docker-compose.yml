@@ -2,11 +2,13 @@ version: "3"
 services:
   caddy:
     image: caddy:2.1.1
+    restart: always
     networks:
       - e-mission
 
   e-mission:
     image: emission/e-mission-server:2.8.0
+    restart: always
     depends_on:
       - mongodb
     environment:
@@ -17,6 +19,7 @@ services:
 
   mongodb:
     image: mongo:3.4
+    restart: always
     networks:
       - e-mission
 
