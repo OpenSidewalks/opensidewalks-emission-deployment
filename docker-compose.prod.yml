@@ -8,6 +8,10 @@ services:
       - ./prod/configs/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./prod/data/caddy:/data:rw
 
+  analysis:
+    volumes:
+        - ./prod/configs/storage:/conf/storage/
+
   mongodb:
     ports:
       - 27017:27017

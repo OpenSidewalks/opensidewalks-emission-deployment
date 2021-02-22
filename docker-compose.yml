@@ -17,6 +17,19 @@ services:
     networks:
       - e-mission
 
+  analysis:
+    build: dockerfiles/analysis
+    restart: always
+    depends_on:
+      - e-mission
+      - mongodb
+    environment:
+      # TODO: pass DB_HOST down to db.conf
+      - DB_HOST=mongodb
+      - WEB_SERVER_HOST=0.0.0.0
+    networks:
+      - e-mission
+
   mongodb:
     image: mongo:3.4
     restart: always

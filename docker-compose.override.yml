@@ -11,6 +11,10 @@ services:
     ports:
       - 8080:8080
 
+  analysis:
+    volumes:
+        - ./dev/configs/storage:/conf/storage/
+
   mongodb:
     ports:
       - 27017:27017
