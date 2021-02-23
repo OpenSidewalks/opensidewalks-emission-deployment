@@ -1,19 +1,18 @@
 # python 3
 FROM emission/e-mission-server.dev.server-only:2.9.1
 
-# CHANGEME: Default crontab runs the regular intake pipeline every hour at 5
-# mins past the hour. Also includes some additional commented out scripts.
-# Replace by your own if you need any other periodic invocations
-COPY crontab /usr/src/app/crontab
-COPY start_cron.sh /usr/src/app/start_cron.sh
-
 # Reimplementation of clone_server.sh
 WORKDIR /usr/src/app
 
 RUN git clone $SERVER_REPO
 WORKDIR /usr/src/app/e-mission-server
-RUN git fetch origin $SERVER_BRANCH
-RUN git checkout -f $SERVER_BRANCH
+# Get a specific commit so that versioning is pinned. 
+# This one is from the "ceo_ebike_project" branch, the one used in the
+# e-mission-docker repo for whatever reason.
+# RUN git fetch origin $SERVER_BRANCH
+# RUN git checkout -f $SERVER_BRANCH
+RUN git fetch origin ceo_ebike_project
+RUN git checkout -f 9d1f098
 
 # Replaces miniconda-based workflow full of nonfunctional `source` commands
 # TODO: use a requirements.txt file
@@ -48,5 +47,9 @@ RUN sed -i -e "s|run.host=server_host|run(reloader=True,host=server_host|g" emis
 RUN sed -i -e "s|HASHED|ASCENDING|" emission/core/get_database.py
 RUN sed -i -e "/GEOSPHERE/d" emission/core/get_database.py
 RUN pip3 install devcron
+
+# crontab runs intake every hour
+COPY crontab /usr/src/app/crontab
+COPY start_cron.sh /usr/src/app/start_cron.sh
 
 CMD ["/bin/bash", "/usr/src/app/start_cron.sh"]
